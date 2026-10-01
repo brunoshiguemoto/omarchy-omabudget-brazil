@@ -1,4 +1,4 @@
-# OMABUDGET BRAZIL (omarchy-omabudgetbrazil)
+# OMABUDGET BRAZIL
 
 ===============================================================================
 🇧🇷 PORTUGUÊS (BRASIL) - VERSÃO PRINCIPAL / BRASILEIRA
