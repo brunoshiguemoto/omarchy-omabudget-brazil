@@ -1,4 +1,14 @@
 {
+  "id": "omarchy-omabudgetbrazil",
+  "name": "Omabudget Brasil",
+  "version": "1.0.0",
+  "description": "App de finanças pessoais local-first para Omarchy Linux com suporte completo a Português (PT-BR) e Inglês.",
+  "exec": "omabudget",
+  "icon": "assets/icon.png",
+  "author": "Comunidade Omarchy / Tradução PT-BR",
+  "license": "MIT"
+}
+{
   "schemaVersion": 1,
   "id": "karamble.omabudget",
   "name": "OMABUDGET",
