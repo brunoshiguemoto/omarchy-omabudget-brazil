@@ -1,0 +1,245 @@
+#!/usr/bin/env bash
+# ==============================================================================
+# Script de Automação para Criação do Repositório: omarchy-omabudgetbrazil
+# ==============================================================================
+# Este script cria a estrutura de diretórios, aloca os arquivos de tradução (PT-BR/EN),
+# adiciona a licença MIT, atualiza as configurações e inicializa o repositório Git local.
+# ==============================================================================
+
+set -e
+
+REPO_NAME="omarchy-omabudgetbrazil"
+
+echo "🚀 Iniciando a configuração do repositório ${REPO_NAME}..."
+
+# 1. Criação do diretório principal do projeto
+if [ -d "$REPO_NAME" ]; then
+    echo "⚠️  A pasta '$REPO_NAME' já existe. Abortando para evitar sobrescrever dados."
+    exit 1
+fi
+
+mkdir -p "$REPO_NAME"
+cd "$REPO_NAME"
+
+echo "📁 Criando estrutura de pastas..."
+mkdir -p cmd/omabudget
+mkdir -p internal/db
+mkdir -p internal/domain
+mkdir -p internal/money
+mkdir -p qml
+mkdir -p assets
+
+# 2. Clonando arquivos base do repositório original
+echo "📥 Clonando repositório original para base do código..."
+git clone https://github.com/karamble/omarchy-omabudget.git temp_base
+cp -r temp_base/* .
+cp -r temp_base/.* . 2>/dev/null || true
+rm -rf temp_base .git
+
+# 3. Criando o arquivo LICENSE (MIT)
+echo "📜 Criando o arquivo LICENSE (MIT)..."
+cat << 'EOF' > LICENSE
+MIT License
+
+Copyright (c) 2026 Comunidade Omarchy / omarchy-omabudgetbrazil
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+EOF
+
+# 4. Adicionando o módulo de Internacionalização (qml/I18n.qml)
+echo "🌐 Criando o componente de tradução qml/I18n.qml..."
+cat << 'EOF' > qml/I18n.qml
+import QtQuick 2.15
+
+pragma Singleton
+
+Item {
+    id: i18n
+
+    // Idioma atual: "PT-BR" ou "EN"
+    property string currentLanguage: "PT-BR"
+
+    function setLanguage(lang) {
+        if (lang === "PT-BR" || lang === "EN") {
+            currentLanguage = lang;
+        }
+    }
+
+    function toggleLanguage() {
+        currentLanguage = (currentLanguage === "PT-BR") ? "EN" : "PT-BR";
+    }
+
+    readonly property var translations: ({
+        "PT-BR": {
+            // General / Navegação
+            "app_title": "Omabudget - Finanças Pessoais Local-First",
+            "menu_dashboard": "1. Painel",
+            "menu_accounts": "2. Contas",
+            "menu_ledger": "3. Extrato",
+            "menu_budget": "4. Orçamento",
+            "menu_bills": "5. Contas Fixas",
+            "menu_reports": "6. Relatórios",
+            "menu_manage": "7. Gerenciar",
+            "menu_alerts": "8. Alertas",
+            "menu_settings": "9. Configurações",
+
+            // Ações / Botões
+            "btn_add_transaction": "Nova Transação (n)",
+            "btn_add_account": "Nova Conta",
+            "btn_add_budget": "Novo Orçamento",
+            "btn_add_bill": "Nova Conta Fixa",
+            "btn_save": "Salvar",
+            "btn_cancel": "Cancelar",
+            "btn_delete": "Excluir",
+            "btn_edit": "Editar",
+            "btn_search": "Buscar (/)",
+            "btn_toggle_lang": "PT-BR 🇧🇷",
+
+            // Outros termos
+            "total_balance": "Saldo Total",
+            "income": "Receitas",
+            "expenses": "Despesas",
+            "net_worth": "Patrimônio Líquido"
+        },
+        "EN": {
+            // General / Navigation
+            "app_title": "Omabudget - Local-First Personal Finance",
+            "menu_dashboard": "1. Dashboard",
+            "menu_accounts": "2. Accounts",
+            "menu_ledger": "3. Ledger",
+            "menu_budget": "4. Budget",
+            "menu_bills": "5. Bills",
+            "menu_reports": "6. Reports",
+            "menu_manage": "7. Manage",
+            "menu_alerts": "8. Alerts",
+            "menu_settings": "9. Settings",
+
+            // Actions / Buttons
+            "btn_add_transaction": "New Transaction (n)",
+            "btn_add_account": "New Account",
+            "btn_add_budget": "New Budget",
+            "btn_add_bill": "New Bill",
+            "btn_save": "Save",
+            "btn_cancel": "Cancel",
+            "btn_delete": "Delete",
+            "btn_edit": "Edit",
+            "btn_search": "Search (/)",
+            "btn_toggle_lang": "EN 🇺🇸",
+
+            // Other terms
+            "total_balance": "Total Balance",
+            "income": "Income",
+            "expenses": "Expenses",
+            "net_worth": "Net Worth"
+        }
+    })
+
+    function tr(key) {
+        if (translations[currentLanguage] && translations[currentLanguage][key]) {
+            return translations[currentLanguage][key];
+        }
+        if (translations["EN"][key]) {
+            return translations["EN"][key];
+        }
+        return key;
+    }
+}
+EOF
+
+# 5. Configurando .gitignore
+echo "🙈 Criando arquivo .gitignore..."
+cat << 'EOF' > .gitignore
+# Binários compilados do Go
+/omabudget
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+
+# Arquivos de teste e cobertura
+*.out
+*.test
+*.prof
+
+# Caches e dependências do Go
+vendor/
+.go/
+
+# Arquivos de dados locais e SQLite (não versão banco de dados pessoal)
+*.db
+*.db-journal
+*.db-wal
+*.db-shm
+
+# Caches do Qt e QML
+*.qmlc
+*.jsc
+.qmlcache/
+
+# IDEs e Editores
+.vscode/
+.idea/
+*.swp
+*~
+.DS_Store
+
+# Pacotes do Arch Linux / Omarchy
+/src/
+/pkg/
+*.pkg.tar.zst
+*.log
+EOF
+
+# 6. Atualizando o arquivo manifest.json
+echo "📄 Atualizando manifest.json para omarchy-omabudgetbrazil (Licença MIT)..."
+cat << 'EOF' > manifest.json
+{
+  "id": "omarchy-omabudgetbrazil",
+  "name": "Omabudget Brasil",
+  "version": "1.0.0",
+  "description": "App de finanças pessoais local-first para Omarchy Linux com suporte completo a Português (PT-BR) e Inglês.",
+  "exec": "omabudget",
+  "icon": "assets/icon.png",
+  "author": "Comunidade Omarchy / Tradução PT-BR",
+  "license": "MIT"
+}
+EOF
+
+# 7. Configurando inicialização do repositório Git
+echo "🔧 Inicializando repositório Git..."
+git init
+git branch -M main
+
+echo "✅ Repositório local '$REPO_NAME' configurado com sucesso com a Licença MIT!"
+echo ""
+echo "📋 Próximos passos para publicar no GitHub:"
+echo "--------------------------------------------------------"
+echo "  1. Acesse a pasta do projeto:"
+echo "     cd $REPO_NAME"
+echo ""
+echo "  2. Adicione todos os arquivos ao Git:"
+echo "     git add ."
+echo "     git commit -m "feat: inicializa omarchy-omabudgetbrazil sob Licença MIT com suporte PT-BR""
+echo ""
+echo "  3. Vincule ao seu repositório remoto no GitHub:"
+echo "     git remote add origin https://github.com/SEU_USUARIO/omarchy-omabudgetbrazil.git"
+echo "     git push -u origin main"
+echo "--------------------------------------------------------"
