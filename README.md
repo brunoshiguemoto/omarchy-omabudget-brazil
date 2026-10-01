@@ -1,3 +1,128 @@
+# OMABUDGET BRAZIL (omarchy-omabudgetbrazil)
+
+===============================================================================
+🇧🇷 PORTUGUÊS (BRASIL) - VERSÃO PRINCIPAL / BRASILEIRA
+===============================================================================
+
+Finanças pessoais local-first para o Omarchy: contas, livro-razão (ledger), orçamentos e contas fixas. Todos os seus dados são armazenados localmente no seu computador, em um único arquivo SQLite, e em nenhum outro lugar. Sem nuvem, sem rastreamento e sem conexão bancária obrigatória.
+
+Um widget na barra do sistema exibe os seus gastos do período em tempo real; um clique abre a aplicação em sua própria janela.
+
+---
+
+### 🚀 O que o app faz
+
+* **Contas**: Conta corrente, poupança, dinheiro, cartões de crédito, empréstimos, investimentos e outros. Cada conta suporta sua própria moeda (incluindo BRL - Real Brasileiro) e alerta de saldo mínimo configurável.
+* **Livro-Razão (Ledger)**: Despesas, receitas e transferências categorizadas, com recebedor/pagador, tags e anotações. Adição rápida em qualquer tela com poucos toques no teclado. Edição, busca avançada, filtros, exclusão com desfazer e lixeira de 30 dias. Marcação múltipla com a tecla `Espaço` para categorizar ou excluir em lote.
+* **Categorias**: Estrutura inicial de categorias pronta para o uso diário (moradia, alimentação, transporte, saúde, pets, etc.). Permite adicionar grupos, subcategorias, alterar ícones/glifos, ocultar das estatísticas ou arquivar.
+* **Reconciliação Bancária**: Compare o extrato do seu banco com o livro-razão. Informe o saldo final, marque as transações conferidas e finalize quando a diferença for zero.
+* **Recebedores/Pagadores (Payees)**: Criados automaticamente ao nomear uma transação. Permite renomear, unir duplicados e definir apelidos para importações automáticas.
+* **Taxas de Câmbio (Moedas e Cripto)**: Suporte a múltiplas moedas com conversão diária em relação à moeda de referência fixa (ex: BRL). Busca de cotações via Banco Central Europeu ou Frankfurter. Bitcoin, Decred, Litecoin e Ethereum mantidos manualmente.
+* **Orçamento (Budgets e Envelopes)**: Planejamento por categoria ou sistema de envelopes onde o dinheiro é alocado em caixinhas. Ferramentas de apoio para copiar o mês anterior, calcular pela média ou mediana.
+* **Contas Fixas e Recorrentes (Bills)**: Regras recorrentes (diárias, mensais ou anuais) com lançamento automático ou confirmação no dia do pagamento.
+* **Insights & Relatórios**: Linhas de destaque no painel mostrando o ritmo dos gastos em relação ao planejado, além de gráficos comparativos por categoria, média diária e projeções.
+* **Alertas do Sistema**: Notificações no desktop sobre limites de orçamento, contas a vencer e saldos baixos.
+* **Agentes via MCP**: Endpoint local (MCP) desativado por padrão, permitindo que agentes de IA autorizados consultem ou registrem transações localmente.
+
+---
+
+### ⌨️ Atalhos do Teclado e Navegação
+
+A janela possui 9 visões principais no trilho lateral, acessíveis pelas teclas numéricas de `1` a `9`. A visão **Gerenciar** (`7`) permite alternar entre abas com a tecla `Tab`.
+
+| Tecla | Função |
+| :--- | :--- |
+| `n` | Adição rápida de transação em qualquer tela |
+| `h` | Ocultar/Exibir valores da tela (privacidade) |
+| `j` / `k` | Mover o cursor para baixo / para cima |
+| `Enter` | Abrir, editar ou confirmar a linha selecionada |
+| `a` | Adicionar: transação, conta, conta fixa ou categoria |
+| `d` / `u` | Excluir transação / Desfazer |
+| `/` / `b` | Buscar no livro-razão / Abrir lixeira |
+| `Space` | Marcar linha (permite ações em lote com `d`) |
+| `[` / `]` | Período anterior / próximo (em Orçamento e Relatórios) |
+| `c`, `v`, `m`, `+`, `-` | Auxiliares de orçamento: copiar anterior, média, mediana, reajustar |
+| `r` | Em Contas: iniciar reconciliação bancária |
+| `Tab` | Alternar para o próximo painel na visão Gerenciar |
+| `Esc` | Fechar formulário, limpar filtro ou fechar a janela |
+
+---
+
+### 💻 Linha de Comando (CLI)
+
+Tudo o que a interface gráfica faz, o executável `omabudget` também realiza via terminal:
+
+```bash
+omabudget add 45.00 "Almoço de trabalho" -tag alimentacao
+omabudget add 120.50 "Mercado" -split "Mercado=100.00" -split "Lazer=20.50"
+omabudget add 3500.00 "Salário" -income
+omabudget add 500.00 -transfer-to Poupança
+omabudget transactions -q mercado -from 2026-09-01
+omabudget budget set Mercado 800
+omabudget report spending
+omabudget backup -o ~/Documentos/ledger.db
+```
+
+---
+
+### 📦 Instalação no Omarchy Linux
+
+Para instalar o repositório **omarchy-omabudgetbrazil** via terminal (Alacritty):
+
+```bash
+omarchy plugin add https://github.com/SEU_USUARIO/omarchy-omabudgetbrazil
+omarchy plugin enable omarchy-omabudgetbrazil right
+omarchy-restart-shell
+```
+
+Para compilar o binário Go localmente:
+
+```bash
+cd ~/.config/omarchy/plugins/omarchy-omabudgetbrazil
+make
+```
+
+> **Requisito**: Toolchain Go versão 1.25 ou superior.
+
+---
+
+### 🖼️ Configuração de Janela no Hyprland
+
+Adicione as seguintes linhas ao arquivo `~/.config/hypr/bindings.lua` para flutuar e centralizar a janela do aplicativo:
+
+```lua
+o.window({ class = "^org.quickshell$", title = "^OMABUDGET$" }, { float = true, center = true, size = { 1180, 720 } })
+o.bind("SUPER + ALT + B", "OMABUDGET", "omarchy-shell shell toggle omarchy-omabudgetbrazil '{}'")
+```
+
+---
+
+### 📁 Onde os dados são salvos
+
+* **Plugin**: `~/.config/omarchy/plugins/omarchy-omabudgetbrazil/`
+* **Dados e Configurações**: `~/.config/omabudget/` (`config.json`, `ledger.db` e `triggers.json`)
+
+---
+
+### 🗑️ Remoção
+
+Para remover o plugin limpando completamente os seus dados:
+
+```bash
+~/.config/omarchy/plugins/omarchy-omabudgetbrazil/bin/omabudget purge
+omarchy plugin remove omarchy-omabudgetbrazil
+```
+
+---
+
+### 📜 Licença
+
+Licença **ISC**. Veja o arquivo `LICENSE` para mais detalhes.
+
+
+____________________________________________________________________________________________________________________
+
+
 # OMABUDGET
 
 Local-first personal finance for Omarchy: accounts, a ledger, budgets and
