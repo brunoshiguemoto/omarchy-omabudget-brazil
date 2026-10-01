@@ -1,24 +1,53 @@
-# Built helpers. Source only ships; the binaries are compiled on the user's
-# machine and must never be committed. The bare names catch a go build run
-# from the repo root, which is how two of them were committed once.
-bin/
-*.exe
-/omabudget
-/omabudgetd
+# ==============================================================================
+# .gitignore - omarchy-omabudgetbrazil
+# Configurado para Go, Qt/QML e pacotes do Arch Linux / Omarchy
+# ==============================================================================
 
-# Go test and coverage output.
+# Executáveis e Binários de Build em Go
+bin/
+omabudget
+*.exe
+*.exe.manifest
+*.dll
+*.so
+*.dylib
 *.test
 *.out
-coverage.*
 
-# Local configuration and state, if a run is pointed at the repo.
-config.json
-ledger.db
-ledger.db-*
-triggers.json
+# Arquivos de Teste e Cobertura
+*.cover
+*.mo
+*.pot
 
-# Editor and OS noise.
-*.swp
-*~
+# Dependências Go (se vendor for usado)
+# vendor/
+
+# Arquivos Temporários de Sistema e IDEs
 .DS_Store
-.lintroot/
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.clang-format
+
+# Qt / QML Cache e Compilação
+*.qmlc
+*.jsc
+.qmake.stash
+Makefile.Debug
+Makefile.Release
+
+# Arch Linux / Omarchy Packaging (makepkg)
+pkg/
+src/
+*.pkg.tar.zst
+*.pkg.tar.xz
+*.log
+
+# Banco de Dados Local de Testes (Não enviar dados financeiros para o Git)
+*.db
+*.sqlite
+*.sqlite3
+ledger.db
+~/.config/omabudget/ledger.db
