@@ -1,22 +1,12 @@
 {
-  "id": "omarchy-omabudget-brazil",
-  "name": "Omabudget Brasil",
-  "version": "1.0.0",
-  "description": "App de finanças pessoais local-first para Omarchy Linux com suporte completo a Português (PT-BR) e Inglês.",
-  "exec": "omabudget",
-  "icon": "assets/icon.png",
-  "author": "Comunidade Omarchy / Tradução PT-BR",
-  "license": "MIT"
-}
-{
   "schemaVersion": 1,
-  "id": "karamble.omabudget",
-  "name": "OMABUDGET",
-  "version": "0.2.0",
-  "author": "karamble",
-  "license": "ISC",
-  "description": "Local-first personal finance: accounts, a ledger, budgets and bills, stored on this machine and nowhere else",
-  "repository": "https://github.com/karamble/omarchy-omabudget",
+  "id": "brunoshiguemoto.omabudget-brazil",
+  "name": "OMABUDGET Brasil",
+  "version": "1.0.0",
+  "author": "brunoshiguemoto / karamble",
+  "license": "MIT",
+  "description": "Finanças pessoais local-first para Omarchy Linux com suporte completo a Português (PT-BR) e Inglês",
+  "repository": "https://github.com/brunoshiguemoto/omarchy-omabudget-brazil",
   "kinds": [
     "bar-widget",
     "panel",
@@ -28,8 +18,8 @@
     "service": "Service.qml"
   },
   "barWidget": {
-    "displayName": "OMABUDGET",
-    "description": "Spending this period at a glance; the app opens as its own window",
+    "displayName": "OMABUDGET BR",
+    "description": "Visão geral de gastos no painel; abre em janela própria",
     "category": "Productivity",
     "aliases": [
       "budget",
@@ -37,7 +27,9 @@
       "finance",
       "expenses",
       "ledger",
-      "bills"
+      "bills",
+      "orcamento",
+      "financas"
     ],
     "allowMultiple": false,
     "defaultSection": "right",
@@ -50,15 +42,15 @@
       {
         "key": "addr",
         "type": "string",
-        "label": "Daemon address",
-        "description": "Where the OMABUDGET daemon is listening. Loopback by design.",
+        "label": "Endereço do Daemon",
+        "description": "Endereço onde o daemon escuta. Loopback por padrão.",
         "defaultValue": "127.0.0.1:8097"
       },
       {
         "key": "refreshSec",
         "type": "integer",
-        "label": "Bar refresh (seconds)",
-        "description": "How often the bar figure is re-read. The daemon keeps its own state; this only controls the glance.",
+        "label": "Atualização da barra (segundos)",
+        "description": "Frequência de atualização da barra superior.",
         "min": 5,
         "max": 600,
         "step": 5,
@@ -67,8 +59,8 @@
       {
         "key": "blurAmounts",
         "type": "boolean",
-        "label": "Hide amounts",
-        "description": "Blur every figure in the bar and the app, for screen sharing. Toggle with h inside the app.",
+        "label": "Ocultar valores",
+        "description": "Ofuscar valores na barra e no app para compartilhamento de tela. Alternável com tecla 'h'.",
         "defaultValue": false
       }
     ]
