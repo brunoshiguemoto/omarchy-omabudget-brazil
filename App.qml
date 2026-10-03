@@ -53,7 +53,7 @@ ApplicationWindow {
                     font.bold: true
                 }
 
-                Item { Layout.fillWidth: true } // Espaçador
+                Item { Layout.fillWidth: true }
 
                 // Botão de busca rápida
                 Button {
@@ -90,7 +90,7 @@ ApplicationWindow {
                     }
                 }
 
-                // Seletor de Idioma (PT-BR / EN)
+                // Seletor Dinâmico de Idioma (PT-BR / EN)
                 Button {
                     id: langToggleBtn
                     text: I18n.currentLanguage === "PT-BR" ? "🇧🇷 PT-BR" : "🇺🇸 EN"
@@ -109,7 +109,7 @@ ApplicationWindow {
                         verticalAlignment: Text.AlignVCenter
                     }
                     ToolTip.visible: hovered
-                    ToolTip.text: "Clique para alternar o idioma / Click to switch language"
+                    ToolTip.text: "Alternar Idioma / Switch Language"
                 }
             }
         }
@@ -225,8 +225,35 @@ ApplicationWindow {
                     // 3. Extrato
                     Text { text: I18n.tr("menu_ledger"); color: "#cdd6f4"; font.pixelSize: 22 }
 
-                    // 4. Orçamento
-                    Text { text: I18n.tr("menu_budget"); color: "#cdd6f4"; font.pixelSize: 22 }
+                    // 4. Orçamento (Demonstrando Categorias Traduzidas Dinamicamente)
+                    ColumnLayout {
+                        spacing: 16
+                        Text { text: I18n.tr("menu_budget"); color: "#cdd6f4"; font.pixelSize: 22; font.bold: true }
+
+                        ListView {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            model: ListModel {
+                                ListElement { parentCat: "Salary"; subCat: "Primary Salary"; planned: "5000.00" }
+                                ListElement { parentCat: "Salary"; subCat: "Bonus"; planned: "1500.00" }
+                                ListElement { parentCat: "Housing"; subCat: "Rent"; planned: "1200.00" }
+                                ListElement { parentCat: "Food"; subCat: "Groceries"; planned: "800.00" }
+                                ListElement { parentCat: "Transportation"; subCat: "Fuel"; planned: "350.00" }
+                            }
+                            delegate: Rectangle {
+                                width: parent.width; height: 40; color: "#313244"; radius: 6
+                                RowLayout {
+                                    anchors.fill: parent; anchors.margins: 10
+                                    Text { 
+                                        text: I18n.trCategory(model.parentCat) + " > " + I18n.trCategory(model.subCat)
+                                        color: "#cdd6f4"; font.pixelSize: 14 
+                                    }
+                                    Item { Layout.fillWidth: true }
+                                    Text { text: "R$ " + model.planned; color: "#a6e3a1"; font.bold: true }
+                                }
+                            }
+                        }
+                    }
 
                     // 5. Contas Fixas
                     Text { text: I18n.tr("menu_bills"); color: "#cdd6f4"; font.pixelSize: 22 }
@@ -234,10 +261,126 @@ ApplicationWindow {
                     // 6. Relatórios
                     Text { text: I18n.tr("menu_reports"); color: "#cdd6f4"; font.pixelSize: 22 }
 
-                    // 7. Gerenciar
-                    Text { text: I18n.tr("menu_manage"); color: "#cdd6f4"; font.pixelSize: 22 }
+                    // 7. GERENCIAR (Com Abas e Botões Traduzidos Dinamicamente)
+                    ColumnLayout {
+                        spacing: 16
+                        
+                        ColumnLayout {
+                            spacing: 4
+                            Text { 
+                                text: I18n.tr("manage_title")
+                                color: "#cdd6f4"
+                                font.pixelSize: 22
+                                font.bold: true 
+                            }
+                            Text { 
+                                text: I18n.tr("manage_subtitle")
+                                color: "#a6adc8"
+                                font.pixelSize: 13 
+                            }
+                        }
 
-                    // 8. Alertas
+                        // Bar de Abas de Gerenciamento (Categorias, Beneficiários, Cotações/Taxas, Alertas)
+                        TabBar {
+                            id: manageTabBar
+                            Layout.fillWidth: true
+                            background: Rectangle { color: "#181825"; radius: 6 }
+
+                            TabButton {
+                                text: I18n.tr("tab_categories")
+                                width: implicitWidth + 20
+                            }
+                            TabButton {
+                                text: I18n.tr("tab_payees")
+                                width: implicitWidth + 20
+                            }
+                            TabButton {
+                                text: I18n.tr("tab_rates")
+                                width: implicitWidth + 20
+                            }
+                            TabButton {
+                                text: I18n.tr("tab_alerts")
+                                width: implicitWidth + 20
+                            }
+                        }
+
+                        // Conteúdo da Aba Selecionada
+                        StackLayout {
+                            Layout.fillWidth: true
+                            Layout.fillHeight: true
+                            currentIndex: manageTabBar.currentIndex
+
+                            // Aba 1: Categorias e Subcategorias
+                            ColumnLayout {
+                                spacing: 12
+                                RowLayout {
+                                    Text { text: I18n.tr("manage_categories_desc"); color: "#a6adc8" }
+                                    Item { Layout.fillWidth: true }
+                                    Button {
+                                        text: I18n.tr("btn_add_category")
+                                        background: Rectangle { color: "#89b4fa"; radius: 4 }
+                                    }
+                                }
+                                Rectangle {
+                                    Layout.fillWidth: true; Layout.fillHeight: true; color: "#24273a"; radius: 8
+                                    Text { anchors.centerIn: parent; text: I18n.tr("tab_categories") + " (" + I18n.currentLanguage + ")"; color: "#cdd6f4" }
+                                }
+                            }
+
+                            // Aba 2: Beneficiários / Favorecidos
+                            ColumnLayout {
+                                spacing: 12
+                                RowLayout {
+                                    Text { text: I18n.tr("manage_payees_desc"); color: "#a6adc8" }
+                                    Item { Layout.fillWidth: true }
+                                    Button {
+                                        text: I18n.tr("btn_add_payee")
+                                        background: Rectangle { color: "#89b4fa"; radius: 4 }
+                                    }
+                                }
+                                Rectangle {
+                                    Layout.fillWidth: true; Layout.fillHeight: true; color: "#24273a"; radius: 8
+                                    Text { anchors.centerIn: parent; text: I18n.tr("tab_payees") + " (" + I18n.currentLanguage + ")"; color: "#cdd6f4" }
+                                }
+                            }
+
+                            // Aba 3: Cotações, Taxas e Moedas
+                            ColumnLayout {
+                                spacing: 12
+                                RowLayout {
+                                    Text { text: I18n.tr("manage_rates_desc"); color: "#a6adc8" }
+                                    Item { Layout.fillWidth: true }
+                                    Button {
+                                        text: I18n.tr("btn_add_rate")
+                                        background: Rectangle { color: "#89b4fa"; radius: 4 }
+                                    }
+                                }
+                                Rectangle {
+                                    Layout.fillWidth: true; Layout.fillHeight: true; color: "#24273a"; radius: 8
+                                    Text { anchors.centerIn: parent; text: I18n.tr("tab_rates") + " (" + I18n.currentLanguage + ")"; color: "#cdd6f4" }
+                                }
+                            }
+
+                            // Aba 4: Alertas e Notificações
+                            ColumnLayout {
+                                spacing: 12
+                                RowLayout {
+                                    Text { text: I18n.tr("manage_alerts_desc"); color: "#a6adc8" }
+                                    Item { Layout.fillWidth: true }
+                                    Button {
+                                        text: I18n.tr("btn_add_alert")
+                                        background: Rectangle { color: "#89b4fa"; radius: 4 }
+                                    }
+                                }
+                                Rectangle {
+                                    Layout.fillWidth: true; Layout.fillHeight: true; color: "#24273a"; radius: 8
+                                    Text { anchors.centerIn: parent; text: I18n.tr("tab_alerts") + " (" + I18n.currentLanguage + ")"; color: "#cdd6f4" }
+                                }
+                            }
+                        }
+                    }
+
+                    // 8. Alertas Globais
                     Text { text: I18n.tr("menu_alerts"); color: "#cdd6f4"; font.pixelSize: 22 }
 
                     // 9. Configurações
@@ -247,7 +390,7 @@ ApplicationWindow {
 
                         RowLayout {
                             spacing: 12
-                            Text { text: "Idioma / Language:"; color: "#cdd6f4"; font.pixelSize: 14 }
+                            Text { text: I18n.tr("settings_language") + ":"; color: "#cdd6f4"; font.pixelSize: 14 }
                             Button {
                                 text: I18n.currentLanguage === "PT-BR" ? "Mudar para English (EN)" : "Mudar para Português (PT-BR)"
                                 onClicked: I18n.toggleLanguage()
