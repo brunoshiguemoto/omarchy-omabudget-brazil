@@ -70,15 +70,15 @@ omabudget backup -o ~/Documentos/ledger.db
 Para instalar o repositório **omarchy-omabudgetbrazil** via terminal (Alacritty):
 
 ```bash
-omarchy plugin add https://github.com/SEU_USUARIO/omarchy-omabudgetbrazil
-omarchy plugin enable omarchy-omabudgetbrazil right
+omarchy plugin add https://github.com/brunoshiguemoto/omarchy-omabudget-brazil
+omarchy plugin enable omarchy-omabudget-brazil right
 omarchy-restart-shell
 ```
 
 Para compilar o binário Go localmente:
 
 ```bash
-cd ~/.config/omarchy/plugins/omarchy-omabudgetbrazil
+cd ~/.config/omarchy/plugins/omarchy-omabudget-brazil
 make
 ```
 
@@ -92,14 +92,14 @@ Adicione as seguintes linhas ao arquivo `~/.config/hypr/bindings.lua` para flutu
 
 ```lua
 o.window({ class = "^org.quickshell$", title = "^OMABUDGET$" }, { float = true, center = true, size = { 1180, 720 } })
-o.bind("SUPER + ALT + B", "OMABUDGET", "omarchy-shell shell toggle omarchy-omabudgetbrazil '{}'")
+o.bind("SUPER + ALT + B", "OMABUDGET", "omarchy-shell shell toggle omarchy-omabudget-brazil '{}'")
 ```
 
 ---
 
 ### 📁 Onde os dados são salvos
 
-* **Plugin**: `~/.config/omarchy/plugins/omarchy-omabudgetbrazil/`
+* **Plugin**: `~/.config/omarchy/plugins/omarchy-omabudget-brazil/`
 * **Dados e Configurações**: `~/.config/omabudget/` (`config.json`, `ledger.db` e `triggers.json`)
 
 ---
@@ -109,8 +109,8 @@ o.bind("SUPER + ALT + B", "OMABUDGET", "omarchy-shell shell toggle omarchy-omabu
 Para remover o plugin limpando completamente os seus dados:
 
 ```bash
-~/.config/omarchy/plugins/omarchy-omabudgetbrazil/bin/omabudget purge
-omarchy plugin remove omarchy-omabudgetbrazil
+~/.config/omarchy/plugins/omarchy-omabudget-brazil/bin/omabudget purge
+omarchy plugin remove omarchy-omabudget-brazil
 ```
 
 ---
