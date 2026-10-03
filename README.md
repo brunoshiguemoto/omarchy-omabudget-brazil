@@ -1,8 +1,8 @@
 # OMABUDGET BRAZIL
 
-=====================================================================
+
 🇧🇷 PORTUGUÊS (BRASIL) - VERSÃO BRASILEIRA
-===============================================================================
+
 
 Finanças pessoais local-first para o Omarchy: contas, livro-razão (ledger), orçamentos e contas fixas. Todos os seus dados são armazenados localmente no seu computador, em um único arquivo SQLite, e em nenhum outro lugar. Sem nuvem, sem rastreamento e sem conexão bancária obrigatória.
 
